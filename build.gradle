@@ -1,0 +1,42 @@
+apply plugin: "groovy"
+apply plugin: "application"
+apply plugin: "idea"
+
+mainClassName = 'org.zirbes.aws.AmiCleanerApp'
+
+repositories {
+    jcenter()
+}
+
+/** Same as `run` task but actually deletes images */
+task purge(type: JavaExec) {
+    args               = project.tasks['run'].args
+    bootstrapClasspath = project.tasks['run'].bootstrapClasspath
+    classpath          = project.tasks['run'].classpath
+    debug              = project.tasks['run'].debug
+    enableAssertions   = project.tasks['run'].enableAssertions
+    environment        = project.tasks['run'].environment
+    errorOutput        = project.tasks['run'].errorOutput
+    executable         = project.tasks['run'].executable
+    ignoreExitValue    = project.tasks['run'].ignoreExitValue
+    main               = project.tasks['run'].main
+    maxHeapSize        = project.tasks['run'].maxHeapSize
+    standardInput      = project.tasks['run'].standardInput
+    standardOutput     = project.tasks['run'].standardOutput
+    systemProperties   = project.tasks['run'].systemProperties
+    workingDir         = project.tasks['run'].workingDir
+
+    jvmArgs = ["-DdryRun=false"]
+
+}
+
+dependencies {
+
+    compile 'com.amazonaws:aws-java-sdk:1.10.2'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.5.4'
+    compile 'joda-time:joda-time:2.8.1'
+    compile 'org.codehaus.groovy:groovy-all:2.4.2'
+    compile 'org.slf4j:slf4j-simple:1.7.13'
+
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
